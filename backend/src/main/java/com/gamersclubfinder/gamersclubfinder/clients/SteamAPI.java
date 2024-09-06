@@ -1,14 +1,25 @@
 package com.gamersclubfinder.gamersclubfinder.clients;
 
-import com.gamersclubfinder.gamersclubfinder.dtos.client.SteamId;
+import com.gamersclubfinder.gamersclubfinder.dtos.client.friendlist.FriendsList;
+import com.gamersclubfinder.gamersclubfinder.dtos.client.playerbans.PlayerBanResponse;
+import com.gamersclubfinder.gamersclubfinder.dtos.client.steamid.SteamId;
+import com.gamersclubfinder.gamersclubfinder.handler.fallbacks.SteamAPIFallBackImpl;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name = "steamapi", url = "https://api.steampowered.com/")
+import java.util.List;
+
+@FeignClient(name = "steamapi", url = "https://api.steampowered.com/", fallback = SteamAPIFallBackImpl.class)
 public interface SteamAPI {
 
     @RequestMapping(method = RequestMethod.GET, value = "/ISteamUser/ResolveVanityURL/v0001/")
     SteamId getPlayerSteamIdByNickname(@RequestParam String key, @RequestParam String vanityurl);
+
+    @RequestMapping(method = RequestMethod.GET, value = "/ISteamUser/GetFriendList/v0001/")
+    FriendsList getPlayerFriendsList(@RequestParam String key, @RequestParam String steamid, @RequestParam String relationship);
+
+    @RequestMapping(method = RequestMethod.GET, value = "/ISteamUser/GetPlayerBans/v1/")
+    PlayerBanResponse getPlayerBans(@RequestParam String key, @RequestParam(name = "steamids") List<String> steamIds);
 }

@@ -7,3 +7,7 @@ spring:
     lazy-initialization: true
   jpa:
     open-in-view: true
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true
