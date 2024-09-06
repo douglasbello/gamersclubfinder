@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: gamersclubfinder
+  profiles:
+    active: test
+  main:
+    lazy-initialization: true
+  jpa:
+    open-in-view: true

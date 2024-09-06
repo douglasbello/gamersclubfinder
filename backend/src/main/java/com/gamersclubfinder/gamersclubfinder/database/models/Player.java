@@ -30,6 +30,8 @@ public class Player {
     private Long playtime_2weeks;
     @Column(name = "community_visibility")
     private Integer communityVisibility;
+    @Column(name = "banned_friends")
+    private Integer bannedFriends;
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
@@ -39,7 +41,7 @@ public class Player {
     public Player() {
     }
 
-    public Player(String personaName, String steamId, String profileUrl, String gamersclubUrl, String avatarUrl, Long playtime, Long playtime_2weeks, Integer communityVisibility) {
+    public Player(String personaName, String steamId, String profileUrl, String gamersclubUrl, String avatarUrl, Long playtime, Long playtime_2weeks, Integer communityVisibility, Integer bannedFriends) {
         this.personaName = personaName;
         this.steamId = steamId;
         this.profileUrl = profileUrl;
@@ -48,6 +50,7 @@ public class Player {
         this.playtime = playtime;
         this.playtime_2weeks = playtime_2weeks;
         this.communityVisibility = communityVisibility;
+        this.bannedFriends = bannedFriends;
     }
 
     public UUID getId() {
@@ -122,6 +125,14 @@ public class Player {
         this.communityVisibility = communityVisibility;
     }
 
+    public Integer getBannedFriends() {
+        return bannedFriends;
+    }
+
+    public void setBannedFriends(Integer bannedFriends) {
+        this.bannedFriends = bannedFriends;
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -163,6 +174,7 @@ public class Player {
         sb.append(", playtime=").append(playtime);
         sb.append(", playtime_2weeks=").append(playtime_2weeks);
         sb.append(", communityVisibility=").append(communityVisibility);
+        sb.append(", bannedFriends=").append(bannedFriends);
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
         sb.append('}');
