@@ -19,7 +19,7 @@ def main():
     total_encontradas = 0
     with ThreadPoolExecutor(max_workers=50) as executor:
         # Mapeando as requisições para os IDs
-        futures = [executor.submit(fetch_player, n) for n in range(1, 2000)]
+        futures = [executor.submit(fetch_player, n) for n in range(1, 10000)]
         
         for future in as_completed(futures):
             steam_link = future.result()

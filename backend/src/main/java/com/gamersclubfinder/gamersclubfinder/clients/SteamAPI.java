@@ -4,6 +4,7 @@ import com.gamersclubfinder.gamersclubfinder.dtos.client.friendlist.FriendsList;
 import com.gamersclubfinder.gamersclubfinder.dtos.client.playerbans.PlayerBanResponse;
 import com.gamersclubfinder.gamersclubfinder.dtos.client.playerstats.PlayerStatsResponse;
 import com.gamersclubfinder.gamersclubfinder.dtos.client.steamid.SteamId;
+import com.gamersclubfinder.gamersclubfinder.dtos.games.OwnedGamesResponse;
 import com.gamersclubfinder.gamersclubfinder.handler.fallbacks.SteamAPIFallBackImpl;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,4 +27,7 @@ public interface SteamAPI {
 
     @RequestMapping(method = RequestMethod.GET, value = "/ISteamUserStats/GetUserStatsForGame/v0002/")
     PlayerStatsResponse getPlayerStatsForGame(@RequestParam String key, @RequestParam(name = "steamid") String steamId, @RequestParam(name = "appid") String appId);
+
+    @RequestMapping(method = RequestMethod.GET, value = "/IPlayerService/GetOwnedGames/v1/")
+    OwnedGamesResponse getOwnedGames(@RequestParam String key, @RequestParam(name = "steamid") String steamId);
 }

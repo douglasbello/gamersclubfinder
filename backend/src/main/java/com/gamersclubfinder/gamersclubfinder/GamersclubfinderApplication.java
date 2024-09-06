@@ -5,11 +5,18 @@ import com.gamersclubfinder.gamersclubfinder.dtos.client.friendlist.FriendsList;
 import com.gamersclubfinder.gamersclubfinder.dtos.client.playerbans.PlayerBanResponse;
 import com.gamersclubfinder.gamersclubfinder.dtos.client.playerstats.PlayerStatsResponse;
 import com.gamersclubfinder.gamersclubfinder.dtos.client.steamid.SteamId;
+import com.gamersclubfinder.gamersclubfinder.dtos.games.OwnedGamesResponse;
+import com.gamersclubfinder.gamersclubfinder.util.DateUtil;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @SpringBootApplication
@@ -38,7 +45,21 @@ public class GamersclubfinderApplication implements CommandLineRunner {
 		PlayerStatsResponse stats = api.getPlayerStatsForGame(STEAM_KEY, "76561199330735142", "730");
 		System.out.println(stats);
 
-		FriendsList friendsList = api.getPlayerFriendsList(STEAM_KEY, "76561199330735142", "friend");
-		System.out.println(friendsList);
+//		FriendsList friendsList = api.getPlayerFriendsList(STEAM_KEY, "76561199330735142", "friend");
+//		System.out.println(friendsList);
+
+		Instant instant = Instant.ofEpochSecond(1654973577);
+		LocalDateTime created = LocalDateTime.ofInstant(instant, ZoneId.of("UTC"));
+
+		DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		String formattedDate = created.format(fmt);
+
+		System.out.println(formattedDate);
+
+		String formattedHours = DateUtil.secondsEpochToHours(1375151L);
+		System.out.println(formattedHours);
+
+		OwnedGamesResponse ownedGamesResponse = api.getOwnedGames(STEAM_KEY, "76561199330735142");
+		System.out.println(ownedGamesResponse);
 	}
 }
