@@ -19,13 +19,18 @@ def main():
     total_encontradas = 0
     with ThreadPoolExecutor(max_workers=50) as executor:
         # Mapeando as requisições para os IDs
-        futures = [executor.submit(fetch_player, n) for n in range(1, 10000)]
+        futures = [executor.submit(fetch_player, n) for n in range(1, 1000)]
         
         for future in as_completed(futures):
             steam_link = future.result()
             if steam_link:
+                link_save = "https://gamersclub.com.br/player/{player_id}"
+                data = {
+                    'steamId': steam_link,
+                    "gamersclubUrl": link_save.format(player_id=player_id_here) 
+                }
+                print(steam_link + " " + link_save)
                 total_encontradas += 1
-                print(steam_link)
     
     print("-------------------------------------------------------------------------------------")
     print(f"Total encontradas = {total_encontradas}")
