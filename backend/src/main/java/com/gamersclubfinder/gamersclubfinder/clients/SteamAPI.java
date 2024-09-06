@@ -2,6 +2,7 @@ package com.gamersclubfinder.gamersclubfinder.clients;
 
 import com.gamersclubfinder.gamersclubfinder.dtos.client.friendlist.FriendsList;
 import com.gamersclubfinder.gamersclubfinder.dtos.client.playerbans.PlayerBanResponse;
+import com.gamersclubfinder.gamersclubfinder.dtos.client.playerstats.PlayerStatsResponse;
 import com.gamersclubfinder.gamersclubfinder.dtos.client.steamid.SteamId;
 import com.gamersclubfinder.gamersclubfinder.handler.fallbacks.SteamAPIFallBackImpl;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -22,4 +23,7 @@ public interface SteamAPI {
 
     @RequestMapping(method = RequestMethod.GET, value = "/ISteamUser/GetPlayerBans/v1/")
     PlayerBanResponse getPlayerBans(@RequestParam String key, @RequestParam(name = "steamids") List<String> steamIds);
+
+    @RequestMapping(method = RequestMethod.GET, value = "/ISteamUserStats/GetUserStatsForGame/v0002/")
+    PlayerStatsResponse getPlayerStatsForGame(@RequestParam String key, @RequestParam(name = "steamid") String steamId, @RequestParam(name = "appid") String appId);
 }
