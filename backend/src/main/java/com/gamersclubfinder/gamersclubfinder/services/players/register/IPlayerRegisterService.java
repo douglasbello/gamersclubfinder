@@ -1,5 +1,7 @@
 package com.gamersclubfinder.gamersclubfinder.services.players.register;
 
-public interface IPlayerRegisterService {
+import com.gamersclubfinder.gamersclubfinder.dtos.players.PlayerRequest;
 
+public interface IPlayerRegisterService {
+    void register(PlayerRequest request);
 }

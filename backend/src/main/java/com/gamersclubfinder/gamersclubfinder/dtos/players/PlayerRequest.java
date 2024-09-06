@@ -1,6 +1,7 @@
 package com.gamersclubfinder.gamersclubfinder.dtos.players;
 
 public record PlayerRequest(
-        String steamUrl
+        String steamId,
+        String gamersclubUrl
 ) {
 }
