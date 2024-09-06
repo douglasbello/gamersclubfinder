@@ -6,6 +6,7 @@ import com.gamersclubfinder.gamersclubfinder.dtos.client.playerbans.PlayerBanRes
 import com.gamersclubfinder.gamersclubfinder.dtos.client.playerstats.PlayerStatsResponse;
 import com.gamersclubfinder.gamersclubfinder.dtos.client.steamid.SteamId;
 import com.gamersclubfinder.gamersclubfinder.dtos.games.OwnedGamesResponse;
+import com.gamersclubfinder.gamersclubfinder.dtos.players.details.Details;
 import com.gamersclubfinder.gamersclubfinder.util.DateUtil;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -13,7 +14,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -37,16 +37,16 @@ public class GamersclubfinderApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		SteamId response = api.getPlayerSteamIdByNickname("28F7BCC590CB51D81413B2ADCCF7ACF6", "napsterofpuppets");
-		System.out.println(response);
+		System.out.println("Get steam id by vanity url - " + response);
 
 		PlayerBanResponse bans = api.getPlayerBans(STEAM_KEY, List.of("76561199330735142"));
-		System.out.println(bans);
+		System.out.println("Player bans - " + bans);
 
 		PlayerStatsResponse stats = api.getPlayerStatsForGame(STEAM_KEY, "76561199330735142", "730");
-		System.out.println(stats);
+		System.out.println("CS2 player stats - " + stats);
 
-//		FriendsList friendsList = api.getPlayerFriendsList(STEAM_KEY, "76561199330735142", "friend");
-//		System.out.println(friendsList);
+		FriendsList friendsList = api.getPlayerFriendsList(STEAM_KEY, "76561199330735142", "friend");
+		System.out.println("Friends list - " + friendsList);
 
 		Instant instant = Instant.ofEpochSecond(1654973577);
 		LocalDateTime created = LocalDateTime.ofInstant(instant, ZoneId.of("UTC"));
@@ -54,12 +54,15 @@ public class GamersclubfinderApplication implements CommandLineRunner {
 		DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		String formattedDate = created.format(fmt);
 
-		System.out.println(formattedDate);
+		System.out.println("Created account at - " + formattedDate);
 
 		String formattedHours = DateUtil.secondsEpochToHours(1375151L);
-		System.out.println(formattedHours);
+		System.out.println("Played hours - " + formattedHours);
 
 		OwnedGamesResponse ownedGamesResponse = api.getOwnedGames(STEAM_KEY, "76561199330735142");
-		System.out.println(ownedGamesResponse);
+		System.out.println("Owned games - " + ownedGamesResponse);
+
+		Details napsterDetails = api.getPlayerDetails(STEAM_KEY, List.of("76561199330735142"));
+		System.out.println("Player details - " + napsterDetails);
 	}
 }

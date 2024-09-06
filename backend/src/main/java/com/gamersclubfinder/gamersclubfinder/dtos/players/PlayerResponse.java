@@ -8,6 +8,7 @@ public record PlayerResponse(
         String avatar,
         Integer bannedFriends,
         Long totalPlayedTime,
-        String createdAt
+        String createdAt,
+        Double KDR
 ) {
 }

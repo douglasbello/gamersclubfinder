@@ -6,6 +6,7 @@ import com.gamersclubfinder.gamersclubfinder.dtos.client.playerbans.PlayerBanRes
 import com.gamersclubfinder.gamersclubfinder.dtos.client.playerstats.PlayerStatsResponse;
 import com.gamersclubfinder.gamersclubfinder.dtos.client.steamid.SteamId;
 import com.gamersclubfinder.gamersclubfinder.dtos.games.OwnedGamesResponse;
+import com.gamersclubfinder.gamersclubfinder.dtos.players.details.Details;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -35,6 +36,11 @@ public class SteamAPIFallBackImpl implements SteamAPI {
 
     @Override
     public OwnedGamesResponse getOwnedGames(String key, String steamId) {
+        return null;
+    }
+
+    @Override
+    public Details getPlayerDetails(String key, List<String> steamIds) {
         return null;
     }
 }
