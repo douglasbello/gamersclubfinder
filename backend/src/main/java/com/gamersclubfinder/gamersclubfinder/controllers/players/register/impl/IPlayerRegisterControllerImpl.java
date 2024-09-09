@@ -1,6 +1,6 @@
-package com.gamersclubfinder.gamersclubfinder.controllers.players.impl;
+package com.gamersclubfinder.gamersclubfinder.controllers.players.register.impl;
 
-import com.gamersclubfinder.gamersclubfinder.controllers.players.IPlayerRegisterController;
+import com.gamersclubfinder.gamersclubfinder.controllers.players.register.IPlayerRegisterController;
 import com.gamersclubfinder.gamersclubfinder.dtos.players.PlayerRequest;
 import com.gamersclubfinder.gamersclubfinder.services.players.register.IPlayerRegisterService;
 import org.springframework.http.ResponseEntity;
