@@ -1,0 +1,16 @@
+<div class="list-container">
+  <ng-container *ngIf="(players$ | async) as player;">
+    <div class="persona-name">
+      <p>{{ player.personaName }}</p>
+    </div>
+    <div class="banned-friends">
+      <p>{{ player.bannedFriends == 0 ? 'PRIVATE' : player.bannedFriends }}</p>
+    </div>
+    <div class="total-played-hours">
+      <p>{{ player.totalPlayedTime == 0 ? 'PRIVATE' : player.totalPlayedTime }}</p>
+    </div>
+    <div class="created-at">
+      <p>{{ player.createdAt }}</p>
+    </div>
+  </ng-container>
+</div>

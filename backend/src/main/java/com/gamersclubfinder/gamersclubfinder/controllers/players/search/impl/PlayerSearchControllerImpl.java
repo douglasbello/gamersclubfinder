@@ -17,7 +17,7 @@ public class PlayerSearchControllerImpl implements IPlayerSearchController {
     }
 
     @GetMapping
-    public ResponseEntity<PlayerResponse> findBySteamId(@RequestBody SearchPlayerRequest steamId) {
+    public ResponseEntity<PlayerResponse> findBySteamId(@RequestParam SearchPlayerRequest steamId) {
         return ResponseEntity.ok().body(playerSearchService.findBySteamId(steamId.steamId()));
     }
 }
