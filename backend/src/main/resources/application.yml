@@ -2,7 +2,7 @@ spring:
   application:
     name: gamersclubfinder
   profiles:
-    active: test
+    active: dev
   main:
     lazy-initialization: true
   cloud:

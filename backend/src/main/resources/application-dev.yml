@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/gamersclubfinder
+    username: postgres
+    password: ujb88kw!
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    defer-datasource-initialization: true
+    show-sql: true
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
