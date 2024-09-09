@@ -5,8 +5,6 @@ spring:
     active: test
   main:
     lazy-initialization: true
-  jpa:
-    open-in-view: true
   cloud:
     openfeign:
       circuitbreaker:

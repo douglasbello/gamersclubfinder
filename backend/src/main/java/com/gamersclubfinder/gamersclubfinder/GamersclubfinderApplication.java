@@ -7,6 +7,7 @@ import com.gamersclubfinder.gamersclubfinder.dtos.client.playerstats.PlayerStats
 import com.gamersclubfinder.gamersclubfinder.dtos.client.steamid.SteamId;
 import com.gamersclubfinder.gamersclubfinder.dtos.games.OwnedGamesResponse;
 import com.gamersclubfinder.gamersclubfinder.dtos.players.details.Details;
+import com.gamersclubfinder.gamersclubfinder.services.players.search.impl.PlayerSearchServiceImpl;
 import com.gamersclubfinder.gamersclubfinder.util.DateUtil;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -23,9 +24,11 @@ import java.util.List;
 @EnableFeignClients
 public class GamersclubfinderApplication implements CommandLineRunner {
 	private final SteamAPI api;
+	private final PlayerSearchServiceImpl playerSearchServiceImpl;
 
-	public GamersclubfinderApplication(SteamAPI api) {
+	public GamersclubfinderApplication(SteamAPI api, PlayerSearchServiceImpl playerSearchServiceImpl) {
 		this.api = api;
+		this.playerSearchServiceImpl = playerSearchServiceImpl;
 	}
 
 	private final String STEAM_KEY = "28F7BCC590CB51D81413B2ADCCF7ACF6";

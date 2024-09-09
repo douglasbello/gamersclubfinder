@@ -17,6 +17,10 @@ public class PlayerRegisterServiceImpl implements IPlayerRegisterService {
     @Override
     public void register(PlayerRequest request) {
         Player player = new Player(request.steamId(), request.gamersclubUrl());
+
+        if (player.getSteamId().contains("http://steamcommunity.com/profiles/"))
+            player.setSteamId(player.getSteamId().replace("http://steamcommunity.com/profiles/", ""));
+
         playerRepository.save(player);
     }
 }
