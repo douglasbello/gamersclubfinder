@@ -16,8 +16,8 @@ public class DateUtil {
         return localDateTime.format(fmt);
     }
 
-    public static String secondsEpochToHours(Long secondsEpoch) {
-        long hours = secondsEpoch / 3600;
+    public static String minutesToHours(Long minutes) {
+        long hours = minutes / 60;
 
         return Long.toString(hours);
     }

@@ -39,13 +39,13 @@ public class GamersclubfinderApplication implements CommandLineRunner {
 		SteamId response = api.getPlayerSteamIdByNickname("28F7BCC590CB51D81413B2ADCCF7ACF6", "napsterofpuppets");
 		System.out.println("Get steam id by vanity url - " + response);
 
-		PlayerBanResponse bans = api.getPlayerBans(STEAM_KEY, List.of("76561199330735142"));
+		PlayerBanResponse bans = api.getPlayerBans(STEAM_KEY, List.of("76561198014127592"));
 		System.out.println("Player bans - " + bans);
 
-		PlayerStatsResponse stats = api.getPlayerStatsForGame(STEAM_KEY, "76561199330735142", "730");
+		PlayerStatsResponse stats = api.getPlayerStatsForGame(STEAM_KEY, "76561198014127592", "730");
 		System.out.println("CS2 player stats - " + stats);
 
-		FriendsList friendsList = api.getPlayerFriendsList(STEAM_KEY, "76561199330735142", "friend");
+		FriendsList friendsList = api.getPlayerFriendsList(STEAM_KEY, "76561198014127592", "friend");
 		System.out.println("Friends list - " + friendsList);
 
 		Instant instant = Instant.ofEpochSecond(1654973577);
@@ -56,13 +56,13 @@ public class GamersclubfinderApplication implements CommandLineRunner {
 
 		System.out.println("Created account at - " + formattedDate);
 
-		String formattedHours = DateUtil.secondsEpochToHours(1375151L);
+		String formattedHours = DateUtil.minutesToHours(1375151L);
 		System.out.println("Played hours - " + formattedHours);
 
-		OwnedGamesResponse ownedGamesResponse = api.getOwnedGames(STEAM_KEY, "76561199330735142");
+		OwnedGamesResponse ownedGamesResponse = api.getOwnedGames(STEAM_KEY, "76561198014127592");
 		System.out.println("Owned games - " + ownedGamesResponse);
 
-		Details napsterDetails = api.getPlayerDetails(STEAM_KEY, List.of("76561199330735142"));
+		Details napsterDetails = api.getPlayerDetails(STEAM_KEY, List.of("76561198014127592"));
 		System.out.println("Player details - " + napsterDetails);
 	}
 }
