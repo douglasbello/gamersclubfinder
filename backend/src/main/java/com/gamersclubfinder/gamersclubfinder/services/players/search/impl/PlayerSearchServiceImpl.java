@@ -13,6 +13,7 @@ import com.gamersclubfinder.gamersclubfinder.dtos.games.OwnedGamesResponse;
 import com.gamersclubfinder.gamersclubfinder.dtos.players.PlayerResponse;
 import com.gamersclubfinder.gamersclubfinder.dtos.players.details.Details;
 import com.gamersclubfinder.gamersclubfinder.dtos.players.details.PlayersDetails;
+import com.gamersclubfinder.gamersclubfinder.handler.exceptions.NotFoundException;
 import com.gamersclubfinder.gamersclubfinder.services.players.search.IPlayerSearchService;
 import com.gamersclubfinder.gamersclubfinder.util.DateUtil;
 import com.gamersclubfinder.gamersclubfinder.util.SteamKeys;
@@ -33,12 +34,12 @@ public class PlayerSearchServiceImpl implements IPlayerSearchService {
         this.steamAPI = steamAPI;
     }
 
-    // todo: throw not found
     @Override
-    public PlayerResponse findBySteamId(String steamId) {
+    public PlayerResponse findBySteamId(String steamId) throws NotFoundException {
         steamId = extractSteamId(steamId);
 
-        Player player = playerRepository.findBySteamId(steamId);
+        final String finalSteamId = steamId;
+        Player player = playerRepository.findBySteamId(steamId).orElseThrow(() -> new NotFoundException("Steam account", finalSteamId));
 
         return fetchSteam(player, steamId);
     }
@@ -54,7 +55,7 @@ public class PlayerSearchServiceImpl implements IPlayerSearchService {
         return response;
     }
 
-    private String extractSteamId(String steamId) {
+    private String extractSteamId(String steamId) throws NotFoundException {
         final String http = "http://steamcommunity.com/id/";
         final String https = "https://steamcommunity.com/id/";
 
@@ -63,9 +64,8 @@ public class PlayerSearchServiceImpl implements IPlayerSearchService {
             steamId = steamId.replace("/", "");
             SteamId response = steamAPI.getPlayerSteamIdByNickname(SteamKeys.STEAM_KEY, steamId.replace("http://steamcommunity.com/id/", ""));
 
-//            if (response == null) {
-//                throw exception;
-//            }
+            if (response == null)
+                throw new NotFoundException("Steam account", steamId);
 
             steamId = response.response().steamid();
         }
@@ -75,9 +75,8 @@ public class PlayerSearchServiceImpl implements IPlayerSearchService {
             steamId = steamId.replace("/", "");
             SteamId response = steamAPI.getPlayerSteamIdByNickname(SteamKeys.STEAM_KEY, steamId.replace("https://steamcommunity.com/id/", ""));
 
-//            if (response == null) {
-//                throw exception;
-//            }
+            if (response == null)
+                throw new NotFoundException("Steam account", steamId);
 
             steamId = response.response().steamid();
         }
