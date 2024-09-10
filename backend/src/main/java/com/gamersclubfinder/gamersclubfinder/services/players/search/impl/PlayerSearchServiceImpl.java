@@ -135,8 +135,9 @@ public class PlayerSearchServiceImpl implements IPlayerSearchService {
             Optional<Stats> deaths = cs2Stats.playerstats().stats().stream().filter(s -> s.name().equals("total_deaths")).findFirst();
 
             kdr =  (double) kills.get().value() / deaths.get().value();
-        } else
+        } else {
             kdr = 0;
+        }
 
         response.setKDR(kdr);
     }
