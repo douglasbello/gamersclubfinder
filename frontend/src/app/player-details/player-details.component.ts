@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { catchError, Observable, of } from "rxjs";
 import { Players } from "../players/players";
 import { PlayerService } from "../services/player.service";
@@ -18,25 +18,29 @@ import { AsyncPipe, NgIf } from "@angular/common";
 export class PlayerDetailsComponent {
   player$: Observable<Players>;
 
-  constructor(private route: ActivatedRoute, private playersService: PlayerService) {
+  constructor(private route: ActivatedRoute, private playersService: PlayerService, private router: Router) {
     const playerId: string | null = this.route.snapshot.paramMap.get('playerId');
-    const id = (playerId ? playerId : 'undefined');
+    const id: string = (playerId ? playerId : 'undefined');
 
     this.player$ = this.playersService.findBySteamId(id)
       .pipe(
         catchError(error => {
-          console.log(error);
-          return of({
-            steamId: "",
-            gamersclubUrl: "",
-            personaName: "",
-            profileUrl: "",
-            avatar: "",
-            bannedFriends: 0,
-            totalPlayedTime: 0,
-            createdAt: "",
-            KDR: 0
-          })
+          if (error.status === 404)
+            this.router.navigate(['/not-found']);
+
+          return of(
+            {
+              steamId: "",
+              gamersclubUrl: "",
+              personaName: "",
+              profileUrl: "",
+              avatar: "",
+              bannedFriends: 0,
+              totalPlayedTime: 0,
+              createdAt: "",
+              KDR: 0
+            }
+          );
         })
       )
   }

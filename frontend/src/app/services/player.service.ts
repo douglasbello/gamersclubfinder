@@ -19,7 +19,7 @@ export class PlayerService {
     return this.httpClient.get<Players>(this.API, { params: { steamId: req } });
   }
 
-  subString(req: string): string {
+  private subString(req: string): string {
     if (req.includes(this.HTTP))
       req.replace(this.HTTP, "");
 

@@ -3,15 +3,15 @@ import { FormsModule } from "@angular/forms";
 import { Router } from "@angular/router";
 
 @Component({
-  selector: 'app-form-tests',
+  selector: 'app-form',
   standalone: true,
   imports: [
     FormsModule
   ],
-  templateUrl: './form-tests.component.html',
-  styleUrl: './form-tests.component.scss'
+  templateUrl: './form.html',
+  styleUrl: './form.scss'
 })
-export class FormTestsComponent {
+export class Form {
   userDetails = {
     name: ''
   }
