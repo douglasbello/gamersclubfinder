@@ -12,16 +12,15 @@ import { Router } from "@angular/router";
   styleUrl: './form.scss'
 })
 export class Form {
-  userDetails = {
-    name: ''
+  playerDetails = {
+    id: ''
   }
 
   constructor(private router: Router) {
   }
 
   submitForm(form: any): void {
-    if (form.valid) {
-      this.router.navigate(['/player/' + this.userDetails.name]);
-    }
+    if (form.valid)
+      this.router.navigate(['/player/' + this.playerDetails.id]);
   }
 }

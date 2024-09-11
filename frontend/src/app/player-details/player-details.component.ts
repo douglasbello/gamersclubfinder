@@ -4,13 +4,15 @@ import { catchError, Observable, of } from "rxjs";
 import { Players } from "../players/players";
 import { PlayerService } from "../services/player.service";
 import { AsyncPipe, NgIf } from "@angular/common";
+import { MatProgressSpinner } from "@angular/material/progress-spinner";
 
 @Component({
   selector: 'app-player-details',
   standalone: true,
   imports: [
     NgIf,
-    AsyncPipe
+    AsyncPipe,
+    MatProgressSpinner
   ],
   templateUrl: './player-details.component.html',
   styleUrl: './player-details.component.scss'

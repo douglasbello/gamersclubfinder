@@ -1,7 +1,13 @@
 <div class="list-container">
-  <ng-container *ngIf="(player$ | async) as player">
+  <ng-container *ngIf="(player$ | async) as player; else loading">
     <div class="persona-name">
       <p>{{ player.personaName }}</p>
     </div>
   </ng-container>
+
+  <ng-template #loading class="loading-spinner-template">
+    <div class="loading-spinner">
+      <mat-spinner></mat-spinner>
+    </div>
+  </ng-template>
 </div>
