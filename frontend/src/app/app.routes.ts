@@ -6,5 +6,6 @@ import { NotFoundComponent } from "./not-found/not-found.component";
 export const routes: Routes = [
   { path: '', component: Form },
   { path: 'player/:playerId', component: PlayerDetailsComponent },
-  { path: 'not-found', component: NotFoundComponent }
+  { path: 'not-found', component: NotFoundComponent},
+  { path: '**', component: NotFoundComponent }
 ];
