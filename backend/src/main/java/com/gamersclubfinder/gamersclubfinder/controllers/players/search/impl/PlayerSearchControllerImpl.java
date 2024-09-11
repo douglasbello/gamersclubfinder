@@ -17,6 +17,7 @@ public class PlayerSearchControllerImpl implements IPlayerSearchController {
         this.playerSearchService = playerSearchService;
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping
     public ResponseEntity<PlayerResponse> findBySteamId(@RequestParam SearchPlayerRequest steamId) throws NotFoundException {
         return ResponseEntity.ok().body(playerSearchService.findBySteamId(steamId.steamId()));

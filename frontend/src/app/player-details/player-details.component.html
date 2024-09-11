@@ -1,0 +1,7 @@
+<div class="list-container">
+  <ng-container *ngIf="(player$ | async) as player">
+    <div class="persona-name">
+      <p>{{ player.personaName }}</p>
+    </div>
+  </ng-container>
+</div>
