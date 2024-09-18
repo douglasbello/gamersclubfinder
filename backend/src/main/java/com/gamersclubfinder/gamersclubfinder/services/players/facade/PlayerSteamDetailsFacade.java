@@ -2,9 +2,7 @@ package com.gamersclubfinder.gamersclubfinder.services.players.facade;
 
 import com.gamersclubfinder.gamersclubfinder.clients.SteamAPI;
 import com.gamersclubfinder.gamersclubfinder.database.models.Player;
-import com.gamersclubfinder.gamersclubfinder.database.repositories.PlayerRepository;
 import com.gamersclubfinder.gamersclubfinder.dtos.client.friendlist.Friend;
-import com.gamersclubfinder.gamersclubfinder.dtos.client.friendlist.FriendsList;
 import com.gamersclubfinder.gamersclubfinder.dtos.client.friendlist.FriendsResponse;
 import com.gamersclubfinder.gamersclubfinder.dtos.client.playerbans.PlayerBanResponse;
 import com.gamersclubfinder.gamersclubfinder.dtos.client.playerstats.PlayerStatsResponse;
@@ -16,6 +14,7 @@ import com.gamersclubfinder.gamersclubfinder.dtos.players.details.Details;
 import com.gamersclubfinder.gamersclubfinder.dtos.players.details.PlayersDetails;
 import com.gamersclubfinder.gamersclubfinder.util.DateUtil;
 import com.gamersclubfinder.gamersclubfinder.util.SteamKeys;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -28,10 +27,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
-public class PlayerSteamDetailsFacade {
+public class PlayerSteamDetailsFacade implements DisposableBean {
     private final SteamAPI steamAPI;
     private static final ExecutorService executor = Executors.newFixedThreadPool(20);
-
 
     public PlayerSteamDetailsFacade(SteamAPI steamAPI) {
         this.steamAPI = steamAPI;
@@ -81,11 +79,6 @@ public class PlayerSteamDetailsFacade {
         }
 
         response.setBannedFriends(bannedFriends.get());
-        shutdown();
-    }
-
-    public void shutdown() {
-        executor.shutdown();
     }
 
     private void setPlayerDetails(PlayerResponse response, String steamId) {
@@ -123,5 +116,10 @@ public class PlayerSteamDetailsFacade {
         }
 
         response.setKDR(kdr);
+    }
+
+    @Override
+    public void destroy() throws Exception {
+        executor.shutdown();
     }
 }
