@@ -23,11 +23,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 public class PlayerSteamDetailsFacade {
-    private final PlayerRepository playerRepository;
     private final SteamAPI steamAPI;
 
-    public PlayerSteamDetailsFacade(PlayerRepository playerRepository, SteamAPI steamAPI) {
-        this.playerRepository = playerRepository;
+    public PlayerSteamDetailsFacade(SteamAPI steamAPI) {
         this.steamAPI = steamAPI;
     }
 
