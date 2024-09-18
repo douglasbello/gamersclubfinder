@@ -40,7 +40,7 @@ export class PlayerDetailsComponent {
               bannedFriends: 0,
               totalPlayedTime: 0,
               createdAt: "",
-              KDR: 0
+              kdr: 0
             }
           );
         })

@@ -3,6 +3,27 @@
     <div class="persona-name">
       <p>{{ player.personaName }}</p>
     </div>
+    <div class="steam-url">
+      <p>https://steamcommunity.com/profiles/{{ player.steamId }}</p>
+    </div>
+    <div class="gamersclub-url">
+      <p>{{ player.gamersclubUrl }}</p>
+    </div>
+    <div class="avatar">
+      <p>{{ player.avatar }}</p>
+    </div>
+    <div class="banned-friends">
+      <p>{{ player.bannedFriends }}</p>
+    </div>
+    <div class="played-time">
+      <p>{{ player.totalPlayedTime }} hours</p>
+    </div>
+    <div class="created-at">
+      <p>{{ player.createdAt }}</p>
+    </div>
+    <div class="kdr">
+      <p>{{ player.kdr }}</p>
+    </div>
   </ng-container>
 
   <ng-template #loading class="loading-spinner-template">

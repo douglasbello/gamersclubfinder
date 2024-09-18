@@ -7,5 +7,5 @@ export interface Players {
   bannedFriends: number,
   totalPlayedTime: number,
   createdAt: string,
-  KDR: number
+  kdr: number
 }
