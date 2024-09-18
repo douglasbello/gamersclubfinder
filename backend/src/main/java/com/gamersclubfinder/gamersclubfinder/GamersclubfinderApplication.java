@@ -2,6 +2,7 @@ package com.gamersclubfinder.gamersclubfinder;
 
 import com.gamersclubfinder.gamersclubfinder.clients.SteamAPI;
 import com.gamersclubfinder.gamersclubfinder.dtos.client.friendlist.FriendsList;
+import com.gamersclubfinder.gamersclubfinder.dtos.client.friendlist.FriendsResponse;
 import com.gamersclubfinder.gamersclubfinder.dtos.client.playerbans.PlayerBanResponse;
 import com.gamersclubfinder.gamersclubfinder.dtos.client.playerstats.PlayerStatsResponse;
 import com.gamersclubfinder.gamersclubfinder.dtos.client.steamid.SteamId;
@@ -48,7 +49,7 @@ public class GamersclubfinderApplication implements CommandLineRunner {
 		PlayerStatsResponse stats = api.getPlayerStatsForGame(STEAM_KEY, "76561198014127592", "730");
 		System.out.println("CS2 player stats - " + stats);
 
-		FriendsList friendsList = api.getPlayerFriendsList(STEAM_KEY, "76561198014127592", "friend");
+		FriendsResponse friendsList = api.getPlayerFriendsList(STEAM_KEY, "76561198014127592", "friend");
 		System.out.println("Friends list - " + friendsList);
 
 		Instant instant = Instant.ofEpochSecond(1654973577);

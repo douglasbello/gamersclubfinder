@@ -2,6 +2,7 @@ package com.gamersclubfinder.gamersclubfinder.handler.fallbacks;
 
 import com.gamersclubfinder.gamersclubfinder.clients.SteamAPI;
 import com.gamersclubfinder.gamersclubfinder.dtos.client.friendlist.FriendsList;
+import com.gamersclubfinder.gamersclubfinder.dtos.client.friendlist.FriendsResponse;
 import com.gamersclubfinder.gamersclubfinder.dtos.client.playerbans.PlayerBanResponse;
 import com.gamersclubfinder.gamersclubfinder.dtos.client.playerstats.PlayerStatsResponse;
 import com.gamersclubfinder.gamersclubfinder.dtos.client.steamid.SteamId;
@@ -20,7 +21,7 @@ public class SteamAPIFallBackImpl implements SteamAPI {
     }
 
     @Override
-    public FriendsList getPlayerFriendsList(String key, String steamid, String relationship) {
+    public FriendsResponse getPlayerFriendsList(String key, String steamid, String relationship) {
         return null;
     }
 

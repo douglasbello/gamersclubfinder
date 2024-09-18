@@ -1,6 +1,7 @@
 package com.gamersclubfinder.gamersclubfinder.clients;
 
 import com.gamersclubfinder.gamersclubfinder.dtos.client.friendlist.FriendsList;
+import com.gamersclubfinder.gamersclubfinder.dtos.client.friendlist.FriendsResponse;
 import com.gamersclubfinder.gamersclubfinder.dtos.client.playerbans.PlayerBanResponse;
 import com.gamersclubfinder.gamersclubfinder.dtos.client.playerstats.PlayerStatsResponse;
 import com.gamersclubfinder.gamersclubfinder.dtos.client.steamid.SteamId;
@@ -21,7 +22,7 @@ public interface SteamAPI {
     SteamId getPlayerSteamIdByNickname(@RequestParam String key, @RequestParam String vanityurl);
 
     @RequestMapping(method = RequestMethod.GET, value = "/ISteamUser/GetFriendList/v0001/")
-    FriendsList getPlayerFriendsList(@RequestParam String key, @RequestParam String steamid, @RequestParam String relationship);
+    FriendsResponse getPlayerFriendsList(@RequestParam String key, @RequestParam String steamid, @RequestParam String relationship);
 
     @RequestMapping(method = RequestMethod.GET, value = "/ISteamUser/GetPlayerBans/v1/")
     PlayerBanResponse getPlayerBans(@RequestParam String key, @RequestParam(name = "steamids") List<String> steamIds);

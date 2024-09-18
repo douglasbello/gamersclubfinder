@@ -3,7 +3,9 @@ package com.gamersclubfinder.gamersclubfinder.services.players.facade;
 import com.gamersclubfinder.gamersclubfinder.clients.SteamAPI;
 import com.gamersclubfinder.gamersclubfinder.database.models.Player;
 import com.gamersclubfinder.gamersclubfinder.database.repositories.PlayerRepository;
+import com.gamersclubfinder.gamersclubfinder.dtos.client.friendlist.Friend;
 import com.gamersclubfinder.gamersclubfinder.dtos.client.friendlist.FriendsList;
+import com.gamersclubfinder.gamersclubfinder.dtos.client.friendlist.FriendsResponse;
 import com.gamersclubfinder.gamersclubfinder.dtos.client.playerbans.PlayerBanResponse;
 import com.gamersclubfinder.gamersclubfinder.dtos.client.playerstats.PlayerStatsResponse;
 import com.gamersclubfinder.gamersclubfinder.dtos.client.playerstats.Stats;
@@ -19,11 +21,17 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 public class PlayerSteamDetailsFacade {
     private final SteamAPI steamAPI;
+    private static final ExecutorService executor = Executors.newFixedThreadPool(20);
+
 
     public PlayerSteamDetailsFacade(SteamAPI steamAPI) {
         this.steamAPI = steamAPI;
@@ -32,30 +40,52 @@ public class PlayerSteamDetailsFacade {
     public PlayerResponse fetchSteam(Player player, String steamId) {
         PlayerResponse response = new PlayerResponse(steamId, player.getGamersclubUrl());
 
-        setPlayerDetails(response, steamId);
-        setBannedFriends(response, steamId);
-        setPlayedHours(response, steamId);
-        setPlayerCsKdr(response, steamId);
+        CompletableFuture<Void> detailsFuture = CompletableFuture.runAsync(() -> setPlayerDetails(response, steamId));
+        CompletableFuture<Void> bannedFriendsFuture = CompletableFuture.runAsync(() -> setBannedFriends(response, steamId));
+        CompletableFuture<Void> playedHoursFuture = CompletableFuture.runAsync(() -> setPlayedHours(response, steamId));
+        CompletableFuture<Void> kdrFuture = CompletableFuture.runAsync(() -> setPlayerCsKdr(response, steamId));
+
+        CompletableFuture<Void> allTasks = CompletableFuture.allOf(detailsFuture, bannedFriendsFuture, playedHoursFuture, kdrFuture);
+
+        try {
+            allTasks.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
 
         return response;
     }
-
     private void setBannedFriends(PlayerResponse response, String steamId) {
-        FriendsList friends = steamAPI.getPlayerFriendsList(SteamKeys.STEAM_KEY, steamId, "friend");
-        AtomicInteger bannedFriends;
-        if (friends != null && friends.friends() != null) {
-            bannedFriends = new AtomicInteger();
-            friends.friends().forEach(f -> {
-                PlayerBanResponse bans = steamAPI.getPlayerBans(SteamKeys.STEAM_KEY, List.of(steamId));
-                bans.players().forEach(b -> {
-                    if (b.VACBanned()) bannedFriends.getAndIncrement();
-                });
-            });
-        } else {
-            bannedFriends = null;
+        FriendsResponse friends = steamAPI.getPlayerFriendsList(SteamKeys.STEAM_KEY, steamId, "friend");
+        AtomicInteger bannedFriends = new AtomicInteger();
+
+        if (friends != null && friends.friendslist() != null && friends.friendslist().friends() != null) {
+            List<Friend> friendList = friends.friendslist().friends();
+
+            // Para cada amigo, cria uma tarefa assíncrona para verificar se está banido
+            List<CompletableFuture<Void>> futures = friendList.stream()
+                    .map(friend -> CompletableFuture.runAsync(() -> {
+                        PlayerBanResponse bans = steamAPI.getPlayerBans(SteamKeys.STEAM_KEY, List.of(friend.steamid()));
+                        bans.players().forEach(ban -> {
+                            if (ban.VACBanned()) bannedFriends.getAndIncrement();
+                        });
+                    }, executor))
+                    .toList(); // Converte para uma lista de CompletableFutures
+
+            CompletableFuture<Void> allOf = CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
+            try {
+                allOf.get();
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
         }
 
-        response.setBannedFriends((bannedFriends != null) ? bannedFriends.get() : null);
+        response.setBannedFriends(bannedFriends.get());
+        shutdown();
+    }
+
+    public void shutdown() {
+        executor.shutdown();
     }
 
     private void setPlayerDetails(PlayerResponse response, String steamId) {
@@ -65,11 +95,12 @@ public class PlayerSteamDetailsFacade {
         response.setPersonaName(playersDetails.personaname());
         response.setAvatar(playersDetails.avatar());
         response.setProfileUrl(playersDetails.profileurl());
-        response.setCreatedAt(DateUtil.secondsEpochToDate(playersDetails.timecreated()));
+        response.setCreatedAt(playersDetails.timecreated() != null ? DateUtil.secondsEpochToDate(playersDetails.timecreated()) : null);
     }
 
     private void setPlayedHours(PlayerResponse response, String steamId) {
         OwnedGamesResponse ownedGames = steamAPI.getOwnedGames(SteamKeys.STEAM_KEY, steamId);
+        System.out.println(ownedGames);
 
         var wrapperPlayedHours = new Object(){ String value = ""; };
         if (ownedGames != null && ownedGames.response() != null && ownedGames.response().games() != null) {
