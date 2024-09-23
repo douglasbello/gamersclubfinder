@@ -1,0 +1,43 @@
+version: '2'
+
+services:
+  gamersclubfinder-frontend:
+    image: 'gamersclubfinder-frontend:latest'
+    build:
+      context: .
+    container_name: gamersclubfinder-frontend
+    ports:
+      - "4200:4200"
+    depends_on:
+      - gamersclubfinder-backend
+      - gamersclubfinder-db
+
+  gamersclubfinder-backend:
+    image: 'gamersclubfinder-backend:latest'
+    build:
+      context: .
+    container_name: gamersclubfinder-backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - gamersclubfinder-db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://gamersclubfinder-db:5432/gamersclubfinder
+      - SPRING_DATASOURCE_USERNAME=gamersclubfinder
+      - SPRING_DATASOURCE_PASSWORD=gamersclubfinder
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
+  gamersclubfinder-db:
+    image: 'postgres:13.1-alpine'
+    container_name: gamersclubfinder-db
+    environment:
+      - POSTGRES_USER=gamersclubfinder
+      - POSTGRES_PASSWORD=gamersclubfinder
+    volumes:
+      - \private\var\lib\postgresql
+    ports:
+      - "5555:5432"
+
+volumes:
+  gamersclubfinder-db:
+    external: true

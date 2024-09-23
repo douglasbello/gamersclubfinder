@@ -1,8 +1,8 @@
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/gamersclubfinder
-    username: postgres
-    password: ujb88kw!
+    username: gamersclubfinder
+    password: gamersclubfinder
   jpa:
     hibernate:
       ddl-auto: validate
