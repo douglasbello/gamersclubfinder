@@ -10,7 +10,6 @@ services:
       - "4200:4200"
     depends_on:
       - gamersclubfinder-backend
-      - gamersclubfinder-db
 
   gamersclubfinder-backend:
     image: 'gamersclubfinder-backend:latest'
@@ -22,10 +21,16 @@ services:
     depends_on:
       - gamersclubfinder-db
     environment:
+      - SPRING_JPA_DATABASE=postgresql
       - SPRING_DATASOURCE_URL=jdbc:postgresql://gamersclubfinder-db:5432/gamersclubfinder
       - SPRING_DATASOURCE_USERNAME=gamersclubfinder
       - SPRING_DATASOURCE_PASSWORD=gamersclubfinder
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
   gamersclubfinder-db:
     image: 'postgres:13.1-alpine'
@@ -33,10 +38,10 @@ services:
     environment:
       - POSTGRES_USER=gamersclubfinder
       - POSTGRES_PASSWORD=gamersclubfinder
-    volumes:
-      - \private\var\lib\postgresql
     ports:
       - "5555:5432"
+    volumes:
+      - \private\var\lib\postgresql
 
 volumes:
   gamersclubfinder-db:
